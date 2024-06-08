@@ -70,8 +70,10 @@
         </a>
       </div>
       <a href="/">Home</a>
-      <a href="./beverages.html" style=";"><li style="margin-right: auto;" >Beverages</li></a>
-      
+      <a href="./beverages.html" style=";">
+        <li style="margin-right: auto;">Beverages</li>
+      </a>
+
       <a>About</a>
       <a>Contact</a>
       <a>
@@ -88,30 +90,58 @@
     </menu>
   </header>
 
-  <div
-    style="justify-content: center; padding: 20px; margin-bottom: 50px; display: flex; flex-direction: column; justify-content: center; border-bottom: 0;">
+  <aside style="float: left;">
+    <h1>Filters</h1>
+    <h2>Category</h2>
+    <div>
+      <label>
+        <input type="radio" name="input-radio-example" value="2B">
+        Coffee
+      </label>
+      <label>
+        <input type="radio" name="input-radio-example" value="2B">
+        Cold Beverages
+      </label>
+      <label>
+        <input type="radio" name="input-radio-example" value="2B">
+        Hot Beverages
+      </label>
+      <label>
+        <input type="radio" name="input-radio-example" value="2B">
+        Seasonal
+      </label>
+      <label>
+        <input type="radio" name="input-radio-example" value="2B">
+        Tea
+      </label>
+    </div>
 
-    <h1 style="font-size: 55px; font-weight: 700;"><span style="font-weight: 400;">GET</span> 90% OFF <span
-        style="font-weight: 400;">FIRST ORDER</span></h1>
+  </aside>
 
-    <button style="color: #F5F8FA; background-color: #0968DA; font-weight: 400; width: fit-content;">Shop now</button>
+  <div id="beverageContainer" style="display: flex; flex-wrap: wrap;">
+
   </div>
 
+  <!-- ----------------------------------------------------------------------- -->
+  <!--                               pagination                                -->
+  <!-- ----------------------------------------------------------------------- -->
+  <div id="pagination" style="margin-top: 20px;"></div>
 
-  <h2>Featured Beverages</h2>
-
-
-  <div id="beverageContainer" style="display: flex;">
-
-  </div>
 
   <script type="module">
-    import { topFiveBeveragesByRank } from './beverages.js';
+    import { beveragesByPage, totalPages } from './beverages.js';
+
     const beverageContainer = document.getElementById('beverageContainer');
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const currentPage = Number( urlParams.get('page') || 1 ); 
+
+    const beverages = beveragesByPage(currentPage);
 
     const displayBeverages = async () => {
 
-      topFiveBeveragesByRank.map(beverage => {
+      beverages.map(beverage => {
         const form = document.createElement('form');
 
         form.innerHTML = `
@@ -127,7 +157,43 @@
 
     displayBeverages();
 
+    `<!-- ----------------------------------------------------------------------- -->
+    <!--                              current page                               -->
+    <!-- ----------------------------------------------------------------------- -->`
+    const paginationDiv = document.getElementById('pagination');
+    const cpButton = document.createElement('button');
+    cpButton.setAttribute('style', 'color: white; background-color: #0968DA');
+    cpButton.textContent = currentPage;
+
+    (currentPage > 1) && ( paginationDiv.appendChild(document.createElement('button')).textContent = 'Previous' );
+    (currentPage > 4) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 4 );
+
+    if(currentPage > 4) {
+      paginationDiv.appendChild(document.createElement('button')).textContent = '...';
+    } else if (currentPage > 3) {
+      paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 3;
+    }
+
+    ((currentPage - 2) > 0) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 2 );
+    ((currentPage - 1) > 0) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 1 );
+    paginationDiv.appendChild(cpButton);
+    ((currentPage + 1) <= totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 1);
+    ((currentPage + 2) <= totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 2);
+
+    if ( (currentPage + 4) <= totalPages ) {
+      paginationDiv.appendChild(document.createElement('button')).textContent = '...';
+    } else if ( (currentPage + 3) <= totalPages ) {
+      paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 3 ;
+    }
+
+    ((currentPage + 4) <= totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 4 );
+    (currentPage  < totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = 'Next' );
+
+
+
   </script>
+
+
 
 </body>
 

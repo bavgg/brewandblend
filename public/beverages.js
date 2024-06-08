@@ -1,4 +1,4 @@
-export const beverages = [
+const beverages = [
   {
     "title": "Black Coffee",
     "description": "Svart kaffe är så enkelt som det kan bli med malda kaffebönor dränkta i hett vatten, serverat varmt. Och om du vill låta fancy kan du kalla svart kaffe med sitt rätta namn: café noir.",
@@ -182,28 +182,47 @@ export const beverages = [
 ];
 
 export const topFiveBeveragesByRank = beverages
-    .slice() // Create a shallow copy of the array to avoid mutating the original
-    .sort((a, b) => a.rank - b.rank) // Sort the array by rank in ascending order
-    .slice(0, 5); // Slice the sorted array to only include the first 5 elements
+  .slice() // Create a shallow copy of the array to avoid mutating the original
+  .sort((a, b) => a.rank - b.rank) // Sort the array by rank in ascending order
+  .slice(0, 5); // Slice the sorted array to only include the first 5 elements
 // console.log(topFiveBeveragesByRank);
 
 const beveragesByCoffee = beverages
-    .filter(beverage => beverage.category === "coffee");
+  .filter(beverage => beverage.category === "coffee");
 // console.log(beveragesByCoffee);
 
 const beveragesByHot = beverages
-    .filter(beverage => beverage.category === "hot_beverage");
+  .filter(beverage => beverage.category === "hot_beverage");
 // console.log(beveragesByHot);
 
 const beveragesByCold = beverages
-    .filter(beverage => beverage.category === "cold_beverage");
+  .filter(beverage => beverage.category === "cold_beverage");
 // console.log(beveragesByCold);
 
 const beveragesBySeasonal = beverages
-    .filter(beverage => beverage.category === "seasonal");
+  .filter(beverage => beverage.category === "seasonal");
 // console.log(beveragesBySeasonal);
 
 const beveragesByTea = beverages
-    .filter(beverage => beverage.category === "tea");
+  .filter(beverage => beverage.category === "tea");
 // console.log(beveragesByTea);
+
+/* -------------------------------------------------------------------------- */
+/*                                 pagination                                 */
+/* -------------------------------------------------------------------------- */
+
+const beveragesCount = beverages.length;
+const ITEMS_PER_PAGE = 10;
+// export const totalPages = Math.ceil(beveragesCount / ITEMS_PER_PAGE);
+export const totalPages = 9;
+
+export function beveragesByPage(currentPage) {
+  
+  
+  
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  return beverages.slice(offset, offset + ITEMS_PER_PAGE);
+}
+
+
 
