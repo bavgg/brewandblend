@@ -118,10 +118,9 @@
 
   </aside>
 
-
   <div id="beverageContainer" style="display: flex; flex-wrap: wrap;"></div>
 
-  <div id="links" style="margin-top: 20px;"></div>
+  <div id="paginationDivContainer" style="margin-top: 20px;"></div>
 
   <script type="module">
 
@@ -182,7 +181,7 @@
 
     `<!-- ------------------------------ displays ------------------------------- -->`
     function displayBeveragesByCategory(category, page = null) {
-      removeLinks();
+      emptyPaginationDivContainer();
       beverageContainer.innerHTML = '';
 
       setPageQuery();
@@ -216,7 +215,7 @@
       });
       const totalPages = (data.length);
 
-      displayLinks(currentPage, totalPages, category);
+      displayPagination(currentPage, totalPages, category);
       setPageCategoryQuery(currentPage, category);
     }
 
@@ -231,87 +230,89 @@
     import { totalPages } from './beveragesData.js';
     import { createButtonLink, createButton } from './utils/pagination.js';
 
-    function removeLinks() {
-      const links = document.getElementById('links');
-      links.innerHTML = '';
+    function emptyPaginationDivContainer() {
+      const paginationDivContainer = document.getElementById('paginationDivContainer');
+      paginationDivContainer.innerHTML = '';
     }
-
-    function displayLinks(currentPage, totalPages, category) {
-      const links = document.getElementById('links');
+    `
+    <!-- ------------------------- pagination buttons -------------------------- -->
+    `
+    function displayPagination(currentPage, totalPages, category) {
+      const paginationDivContainer = document.getElementById('paginationDivContainer');
 
       const prevButton = createButton('Previous');
       prevButton.addEventListener('click', () => {
         displayBeveragesByCategory(category, currentPage - 1)
       });
-      (currentPage > 1) && links.appendChild(prevButton);
+      (currentPage > 1) && paginationDivContainer.appendChild(prevButton);
       const firstButton = createButton(1);
       firstButton.addEventListener('click', () => {
         displayBeveragesByCategory(category, 1)
       });
-      (currentPage > 4) && links.appendChild(firstButton);
+      (currentPage > 4) && paginationDivContainer.appendChild(firstButton);
 
       if (currentPage > 4) {
         const btn = createButton('...');
-        links.appendChild(btn);
+        paginationDivContainer.appendChild(btn);
       } else if (currentPage > 3) {
         const cpm3Button = createButton(currentPage - 3);
         cpm3Button.addEventListener('click', () => {
           displayBeveragesByCategory(category, currentPage - 3)
         });
-        links.appendChild(cpm3Button);
+        paginationDivContainer.appendChild(cpm3Button);
       }
 
       const cpm2Button = createButton(currentPage - 2);
       cpm2Button.addEventListener('click', () => {
         displayBeveragesByCategory(category, currentPage - 2)
       });
-      ((currentPage - 2) > 0) && links.appendChild(cpm2Button);
+      ((currentPage - 2) > 0) && paginationDivContainer.appendChild(cpm2Button);
       const cpm1Button = createButton(currentPage - 1);
       cpm1Button.addEventListener('click', () => {
         displayBeveragesByCategory(category, currentPage - 1)
       });
-      ((currentPage - 1) > 0) && links.appendChild(cpm1Button);
+      ((currentPage - 1) > 0) && paginationDivContainer.appendChild(cpm1Button);
 
       const cpButton = createButton(currentPage);
       cpButton.addEventListener('click', () => {
         displayBeveragesByCategory(category, currentPage)
       });
-      links.appendChild(cpButton);
+      paginationDivContainer.appendChild(cpButton);
 
       const cp1Button = createButton(currentPage + 1);
       cp1Button.addEventListener('click', () => {
         displayBeveragesByCategory(category, currentPage + 1)
       });
-      ((currentPage + 1) <= totalPages) && links.appendChild(cp1Button);
+      ((currentPage + 1) <= totalPages) && paginationDivContainer.appendChild(cp1Button);
       const cp2Button = createButton(currentPage + 2);
       cp2Button.addEventListener('click', () => {
         displayBeveragesByCategory(category, currentPage + 2)
       });
-      ((currentPage + 2) <= totalPages) && links.appendChild(cp2Button);
+      ((currentPage + 2) <= totalPages) && paginationDivContainer.appendChild(cp2Button);
 
       if ((currentPage + 4) <= totalPages) {
         const btn = createButton('...');
-        links.appendChild(btn);
+        paginationDivContainer.appendChild(btn);
       } else if ((currentPage + 3) <= totalPages) {
         const cp3Button = createButton(currentPage + 3);
         cp3Button.addEventListener('click', () => {
           displayBeveragesByCategory(category, currentPage + 3)
         });
-        links.appendChild(cp3Button);
+        paginationDivContainer.appendChild(cp3Button);
       }
 
       const lastButton = createButton(totalPages);
       lastButton.addEventListener('click', () => {
         displayBeveragesByCategory(category, totalPages)
       });
-      ((currentPage + 4) <= totalPages) && links.appendChild(lastButton);
+      ((currentPage + 4) <= totalPages) && paginationDivContainer.appendChild(lastButton);
 
       const nextButton = createButton('Next');
       nextButton.addEventListener('click', () => {
         const page = getPageQuery() + 1;
         displayBeveragesByCategory(category, page)
       });
-      (currentPage < totalPages) && links.appendChild(nextButton);
+      (currentPage < totalPages) && paginationDivContainer.appendChild(nextButton);
 
     }
 
