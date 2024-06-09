@@ -118,28 +118,53 @@
 
   </aside>
 
-  <div id="beverageContainer" style="display: flex; flex-wrap: wrap;">
 
-  </div>
+  <div id="beverageContainer" style="display: flex; flex-wrap: wrap;"></div>
 
-  <!-- ----------------------------------------------------------------------- -->
-  <!--                               pagination                                -->
-  <!-- ----------------------------------------------------------------------- -->
-  <div id="pagination" style="margin-top: 20px;"></div>
-
-
+  <div id="links" style="margin-top: 20px;"></div>
+  
   <script type="module">
-    import { beveragesByPage, totalPages } from './beverages.js';
+    
+    function getCurrentPage() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const currentPage = Number(urlParams.get('page') || 1);
+      return currentPage;
+    }
+
+    import { beveragesByPage, coffees, hotBeverages, coldBeverages, seasonals, teas } from './beveragesData.js';
 
     const beverageContainer = document.getElementById('beverageContainer');
 
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const currentPage = Number( urlParams.get('page') || 1 ); 
 
-    const beverages = beveragesByPage(currentPage);
+    function displayCoffees() {
+      const coffees = fetchCoffees;
+      console.log(coffees);
+    }
+    function displayHotBeverages() {
 
-    const displayBeverages = async () => {
+    }
+
+    function displayColdBeverages() {
+
+    }
+
+    function displaySeasonals() {
+
+    }
+
+    function displayTeas() {
+
+    }
+
+
+
+
+
+    const currentPage = getCurrentPage();
+
+    const displayBeveragesByPage = async () => {
+      const beverages = beveragesByPage(currentPage);
 
       beverages.map(beverage => {
         const form = document.createElement('form');
@@ -150,49 +175,60 @@
           <p>$${beverage.price}.00</p>
           <button>Add to cart</button>
         `;
-
         beverageContainer.appendChild(form);
       });
     }
+    displayBeveragesByPage();
+    `
+    <!-- ----------------------------------------------------------------------- -->
+    <!--                            display beverages                            -->
+    <!-- ----------------------------------------------------------------------- -->
+    
+  
+  
+    <!-- ----------------------------------------------------------------------- -->
+    <!--                            pagination links                             -->
+    <!-- ----------------------------------------------------------------------- -->
+    `
+    import { totalPages } from './beveragesData.js';
+    import { createButtonLink, createButton } from './utils/pagination.js';
 
-    displayBeverages();
+    const links = document.getElementById('links');
 
-    `<!-- ----------------------------------------------------------------------- -->
-    <!--                              current page                               -->
-    <!-- ----------------------------------------------------------------------- -->`
-    const paginationDiv = document.getElementById('pagination');
-    const cpButton = document.createElement('button');
-    cpButton.setAttribute('style', 'color: white; background-color: #0968DA');
-    cpButton.textContent = currentPage;
+    (currentPage > 1) && links.appendChild(createButtonLink((currentPage - 1), 'Previous'));
+    (currentPage > 4) && links.appendChild(createButtonLink(1));
 
-    (currentPage > 1) && ( paginationDiv.appendChild(document.createElement('button')).textContent = 'Previous' );
-    (currentPage > 4) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 4 );
-
-    if(currentPage > 4) {
-      paginationDiv.appendChild(document.createElement('button')).textContent = '...';
+    if (currentPage > 4) {
+      const btn = createButton('...');
+      links.appendChild(btn);
     } else if (currentPage > 3) {
-      paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 3;
+      links.appendChild(createButtonLink(currentPage - 3));
     }
 
-    ((currentPage - 2) > 0) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 2 );
-    ((currentPage - 1) > 0) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage - 1 );
-    paginationDiv.appendChild(cpButton);
-    ((currentPage + 1) <= totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 1);
-    ((currentPage + 2) <= totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 2);
+    ((currentPage - 2) > 0) && links.appendChild(createButtonLink(currentPage - 2));
+    ((currentPage - 1) > 0) && links.appendChild(createButtonLink(currentPage - 1));
 
-    if ( (currentPage + 4) <= totalPages ) {
-      paginationDiv.appendChild(document.createElement('button')).textContent = '...';
-    } else if ( (currentPage + 3) <= totalPages ) {
-      paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 3 ;
+    links.appendChild(createButtonLink(currentPage));
+
+    ((currentPage + 1) <= totalPages) && links.appendChild(createButtonLink(currentPage + 1));
+    ((currentPage + 2) <= totalPages) && links.appendChild(createButtonLink(currentPage + 2));
+
+    if ((currentPage + 4) <= totalPages) {
+      const btn = createButton('...');
+      links.appendChild(btn);
+    } else if ((currentPage + 3) <= totalPages) {
+      links.appendChild(createButtonLink(currentPage + 3));
     }
 
-    ((currentPage + 4) <= totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = currentPage + 4 );
-    (currentPage  < totalPages) && (paginationDiv.appendChild(document.createElement('button')).textContent = 'Next' );
-
-
+    ((currentPage + 4) <= totalPages) && links.appendChild(createButtonLink(totalPages));
+    (currentPage < totalPages) && links.appendChild(createButtonLink((currentPage + 1), 'Next'));
+    `
+    <!-- ----------------------------------------------------------------------- -->
+    <!--                            pagination links                             -->
+    <!-- ----------------------------------------------------------------------- -->
+    `
 
   </script>
-
 
 
 </body>

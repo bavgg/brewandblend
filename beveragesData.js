@@ -187,23 +187,23 @@ export const topFiveBeveragesByRank = beverages
   .slice(0, 5); // Slice the sorted array to only include the first 5 elements
 // console.log(topFiveBeveragesByRank);
 
-const beveragesByCoffee = beverages
+export const coffees = beverages
   .filter(beverage => beverage.category === "coffee");
 // console.log(beveragesByCoffee);
 
-const beveragesByHot = beverages
+export const hotBeverages = beverages
   .filter(beverage => beverage.category === "hot_beverage");
 // console.log(beveragesByHot);
 
-const beveragesByCold = beverages
+export const coldBeverages = beverages
   .filter(beverage => beverage.category === "cold_beverage");
 // console.log(beveragesByCold);
 
-const beveragesBySeasonal = beverages
+export const seasonals = beverages
   .filter(beverage => beverage.category === "seasonal");
 // console.log(beveragesBySeasonal);
 
-const beveragesByTea = beverages
+export const teas = beverages
   .filter(beverage => beverage.category === "tea");
 // console.log(beveragesByTea);
 
@@ -213,13 +213,10 @@ const beveragesByTea = beverages
 
 const beveragesCount = beverages.length;
 const ITEMS_PER_PAGE = 10;
-// export const totalPages = Math.ceil(beveragesCount / ITEMS_PER_PAGE);
-export const totalPages = 9;
+export const totalPages = Math.ceil(beveragesCount / ITEMS_PER_PAGE);
+// export const totalPages = 9;
 
 export function beveragesByPage(currentPage) {
-  
-  
-  
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   return beverages.slice(offset, offset + ITEMS_PER_PAGE);
 }
