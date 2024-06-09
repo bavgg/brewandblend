@@ -95,23 +95,23 @@
     <h2>Category</h2>
     <div>
       <label>
-        <input type="radio" name="input-radio-example" value="2B">
+        <input type="radio" id="coffee" name="input-radio-example" value="2B">
         Coffee
       </label>
       <label>
-        <input type="radio" name="input-radio-example" value="2B">
+        <input type="radio" id="cold" name="input-radio-example" value="2B">
         Cold Beverages
       </label>
       <label>
-        <input type="radio" name="input-radio-example" value="2B">
+        <input type="radio" id="hot" name="input-radio-example" value="2B">
         Hot Beverages
       </label>
       <label>
-        <input type="radio" name="input-radio-example" value="2B">
+        <input type="radio" id="seasonal" name="input-radio-example" value="2B">
         Seasonal
       </label>
       <label>
-        <input type="radio" name="input-radio-example" value="2B">
+        <input type="radio" id="teaa" name="input-radio-example" value="2B">
         Tea
       </label>
     </div>
@@ -122,9 +122,9 @@
   <div id="beverageContainer" style="display: flex; flex-wrap: wrap;"></div>
 
   <div id="links" style="margin-top: 20px;"></div>
-  
+
   <script type="module">
-    
+
     function getCurrentPage() {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
@@ -136,25 +136,92 @@
 
     const beverageContainer = document.getElementById('beverageContainer');
 
+    const coffeeInput = document.getElementById('coffee');
+    coffeeInput.addEventListener('click', displayCoffees);
+
+    const hotInput = document.getElementById('hot');
+    hotInput.addEventListener('click', displayHotBeverages);
+
+    const coldInput = document.getElementById('cold');
+    coldInput.addEventListener('click', displayColdBeverages);
+
+    const seasonalInput = document.getElementById('seasonal');
+    seasonalInput.addEventListener('click', displaySeasonals);
+
+    const teaInput = document.getElementById('teaa');
+    teaInput.addEventListener('click', displayTeas);
 
     function displayCoffees() {
-      const coffees = fetchCoffees;
-      console.log(coffees);
+      beverageContainer.innerHTML = '';
+      coffees.map(coffee => {
+        const form = document.createElement('form');
+
+        form.innerHTML = `
+          <img height='170' src=${coffee.image}>
+          <h4>${coffee.title}</h4>
+          <p>$${coffee.price}.00</p>
+          <button>Add to cart</button>
+        `;
+        beverageContainer.appendChild(form);
+      });
     }
     function displayHotBeverages() {
+      beverageContainer.innerHTML = '';
+      hotBeverages.map(hot => {
+        const form = document.createElement('form');
 
+        form.innerHTML = `
+          <img height='170' src=${hot.image}>
+          <h4>${hot.title}</h4>
+          <p>$${hot.price}.00</p>
+          <button>Add to cart</button>
+        `;
+        beverageContainer.appendChild(form);
+      });
     }
-
     function displayColdBeverages() {
+      beverageContainer.innerHTML = '';
+      coldBeverages.map(cold => {
+        const form = document.createElement('form');
 
+        form.innerHTML = `
+          <img height='170' src=${cold.image}>
+          <h4>${cold.title}</h4>
+          <p>$${cold.price}.00</p>
+          <button>Add to cart</button>
+        `;
+        beverageContainer.appendChild(form);
+      });
     }
 
     function displaySeasonals() {
+      beverageContainer.innerHTML = '';
+      seasonals.map(seasonal => {
+        const form = document.createElement('form');
 
+        form.innerHTML = `
+          <img height='170' src=${seasonal.image}>
+          <h4>${seasonal.title}</h4>
+          <p>$${seasonal.price}.00</p>
+          <button>Add to cart</button>
+        `;
+        beverageContainer.appendChild(form);
+      });
     }
 
     function displayTeas() {
+      beverageContainer.innerHTML = '';
+      teas.map(tea => {
+        const form = document.createElement('form');
 
+        form.innerHTML = `
+          <img height='170' src=${tea.image}>
+          <h4>${tea.title}</h4>
+          <p>$${tea.price}.00</p>
+          <button>Add to cart</button>
+        `;
+        beverageContainer.appendChild(form);
+      });
     }
 
 
