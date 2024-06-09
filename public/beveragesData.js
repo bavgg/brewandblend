@@ -180,7 +180,6 @@ const beverages = [
     "rank": 24,
   }
 ];
-
 export const topFiveBeveragesByRank = beverages
   .slice() // Create a shallow copy of the array to avoid mutating the original
   .sort((a, b) => a.rank - b.rank) // Sort the array by rank in ascending order
@@ -207,18 +206,40 @@ export const teas = beverages
   .filter(beverage => beverage.category === "tea");
 // console.log(beveragesByTea);
 
-/* -------------------------------------------------------------------------- */
-/*                                 pagination                                 */
-/* -------------------------------------------------------------------------- */
-
+/* ------------------------------- pagination ------------------------------- */
 const beveragesCount = beverages.length;
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 3;
 export const totalPages = Math.ceil(beveragesCount / ITEMS_PER_PAGE);
-// export const totalPages = 9;
 
+export function getTotalPages(data) {
+  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+  return totalPages;
+}
+
+// export const totalPages = 9;
 export function beveragesByPage(currentPage) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  return beverages.slice(offset, offset + ITEMS_PER_PAGE);
+  return { partition: beverages.slice(offset, offset + ITEMS_PER_PAGE), length: getTotalPages(beverages) };
+  // return beverages.slice(offset, offset + ITEMS_PER_PAGE);
+}
+export function getDataByPage(data, currentPage) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  return { partition: data.slice(offset, offset + ITEMS_PER_PAGE), length: getTotalPages(data) };
+}
+export function coffeesByPage(currentPage) {
+  return getDataByPage(coffees, currentPage);
+}
+export function hotBeveragesByPage(currentPage) {
+  return getDataByPage(hotBeverages, currentPage);
+}
+export function coldBeveragesByPage(currentPage) {
+  return getDataByPage(coldBeverages, currentPage);
+}
+export function seasonalsByPage(currentPage) {
+  return getDataByPage(seasonals, currentPage);
+}
+export function teasByPage(currentPage) {
+  return getDataByPage(teas, currentPage);
 }
 
 

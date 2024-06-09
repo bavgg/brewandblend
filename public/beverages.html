@@ -125,175 +125,195 @@
 
   <script type="module">
 
-    function getCurrentPage() {
+    function getPageQuery() {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       const currentPage = Number(urlParams.get('page') || 1);
       return currentPage;
     }
+    function getCategoryQuery() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const currentPage = Number(urlParams.get('category'));
+      return currentPage;
+    }
 
-    import { beveragesByPage, coffees, hotBeverages, coldBeverages, seasonals, teas } from './beveragesData.js';
+    import { getTotalPages, beveragesByPage, coffeesByPage, hotBeveragesByPage, coldBeveragesByPage, seasonalsByPage, teasByPage } from './beveragesData.js';
 
     const beverageContainer = document.getElementById('beverageContainer');
 
-    const coffeeInput = document.getElementById('coffee');
-    coffeeInput.addEventListener('click', displayCoffees);
+    `<!-- ------------------------------- events -------------------------------- -->`
+    {
+      const coffeeInput = document.getElementById('coffee');
+      coffeeInput.addEventListener('click', () => displayBeveragesByCategory('coffee'));
 
-    const hotInput = document.getElementById('hot');
-    hotInput.addEventListener('click', displayHotBeverages);
+      const hotInput = document.getElementById('hot');
+      hotInput.addEventListener('click', () => displayBeveragesByCategory('hot'));
 
-    const coldInput = document.getElementById('cold');
-    coldInput.addEventListener('click', displayColdBeverages);
+      const coldInput = document.getElementById('cold');
+      coldInput.addEventListener('click', () => displayBeveragesByCategory('cold'));
 
-    const seasonalInput = document.getElementById('seasonal');
-    seasonalInput.addEventListener('click', displaySeasonals);
+      const seasonalInput = document.getElementById('seasonal');
+      seasonalInput.addEventListener('click', () => displayBeveragesByCategory('seasonal'));
 
-    const teaInput = document.getElementById('teaa');
-    teaInput.addEventListener('click', displayTeas);
+      const teaInput = document.getElementById('teaa');
+      teaInput.addEventListener('click', () => displayBeveragesByCategory('tea'));
+    }
 
-    function displayCoffees() {
+    function setPageQuery() {
+      // Create a new URL object
+      const url = new URL(window.location.href);
+      // Set query parameters
+      url.searchParams.set('page', '1');
+      // Update the URL in the browser without reloading the page
+      window.history.pushState({}, '', url);
+    }
+
+    function setPageCategoryQuery(page, category) {
+      // console.log('this', page);
+      // Create a new URL object
+      const url = new URL(window.location.href);
+      // Set query parameters
+      url.searchParams.set('page', page);
+      url.searchParams.set('category', category);
+      // Update the URL in the browser without reloading the page
+      window.history.pushState({}, '', url);
+    }
+
+    `<!-- ------------------------------ displays ------------------------------- -->`
+    function displayBeveragesByCategory(category, page = null) {
+      removeLinks();
       beverageContainer.innerHTML = '';
-      coffees.map(coffee => {
+
+      setPageQuery();
+      const currentPage = page || 1;
+
+      let data;
+      if (category === 'coffee') {
+        data = coffeesByPage(currentPage);
+      } else if (category === 'hot') {
+        data = hotBeveragesByPage(currentPage);
+      } else if (category === 'cold') {
+        data = coldBeveragesByPage(currentPage);
+      } else if (category === 'seasonal') {
+        data = seasonalsByPage(currentPage);
+      } else if (category === 'tea') {
+        data = teasByPage(currentPage);
+      } else if (category === 'all') {
+        data = beveragesByPage(currentPage);
+      }
+
+      data.partition.map(d => {
         const form = document.createElement('form');
 
         form.innerHTML = `
-          <img height='170' src=${coffee.image}>
-          <h4>${coffee.title}</h4>
-          <p>$${coffee.price}.00</p>
+          <img height='170' src=${d.image}>
+          <h4>${d.title}</h4>
+          <p>$${d.price}.00</p>
           <button>Add to cart</button>
         `;
         beverageContainer.appendChild(form);
       });
-    }
-    function displayHotBeverages() {
-      beverageContainer.innerHTML = '';
-      hotBeverages.map(hot => {
-        const form = document.createElement('form');
+      const totalPages = (data.length);
 
-        form.innerHTML = `
-          <img height='170' src=${hot.image}>
-          <h4>${hot.title}</h4>
-          <p>$${hot.price}.00</p>
-          <button>Add to cart</button>
-        `;
-        beverageContainer.appendChild(form);
-      });
-    }
-    function displayColdBeverages() {
-      beverageContainer.innerHTML = '';
-      coldBeverages.map(cold => {
-        const form = document.createElement('form');
-
-        form.innerHTML = `
-          <img height='170' src=${cold.image}>
-          <h4>${cold.title}</h4>
-          <p>$${cold.price}.00</p>
-          <button>Add to cart</button>
-        `;
-        beverageContainer.appendChild(form);
-      });
+      displayLinks(currentPage, totalPages, category);
+      setPageCategoryQuery(currentPage, category);
     }
 
-    function displaySeasonals() {
-      beverageContainer.innerHTML = '';
-      seasonals.map(seasonal => {
-        const form = document.createElement('form');
-
-        form.innerHTML = `
-          <img height='170' src=${seasonal.image}>
-          <h4>${seasonal.title}</h4>
-          <p>$${seasonal.price}.00</p>
-          <button>Add to cart</button>
-        `;
-        beverageContainer.appendChild(form);
-      });
-    }
-
-    function displayTeas() {
-      beverageContainer.innerHTML = '';
-      teas.map(tea => {
-        const form = document.createElement('form');
-
-        form.innerHTML = `
-          <img height='170' src=${tea.image}>
-          <h4>${tea.title}</h4>
-          <p>$${tea.price}.00</p>
-          <button>Add to cart</button>
-        `;
-        beverageContainer.appendChild(form);
-      });
-    }
-
-
-
-
-
-    const currentPage = getCurrentPage();
-
-    const displayBeveragesByPage = async () => {
-      const beverages = beveragesByPage(currentPage);
-
-      beverages.map(beverage => {
-        const form = document.createElement('form');
-
-        form.innerHTML = `
-          <img height='170' src=${beverage.image}>
-          <h4>${beverage.title}</h4>
-          <p>$${beverage.price}.00</p>
-          <button>Add to cart</button>
-        `;
-        beverageContainer.appendChild(form);
-      });
-    }
-    displayBeveragesByPage();
     `
-    <!-- ----------------------------------------------------------------------- -->
-    <!--                            display beverages                            -->
-    <!-- ----------------------------------------------------------------------- -->
-    
-  
-  
-    <!-- ----------------------------------------------------------------------- -->
-    <!--                            pagination links                             -->
-    <!-- ----------------------------------------------------------------------- -->
+    <!-- ------------------------------- on load ------------------------------- -->
     `
+    document.addEventListener('DOMContentLoaded', function () {
+      // Code to run once after the initial render
+      displayBeveragesByCategory('all');
+    });
+
     import { totalPages } from './beveragesData.js';
     import { createButtonLink, createButton } from './utils/pagination.js';
 
-    const links = document.getElementById('links');
-
-    (currentPage > 1) && links.appendChild(createButtonLink((currentPage - 1), 'Previous'));
-    (currentPage > 4) && links.appendChild(createButtonLink(1));
-
-    if (currentPage > 4) {
-      const btn = createButton('...');
-      links.appendChild(btn);
-    } else if (currentPage > 3) {
-      links.appendChild(createButtonLink(currentPage - 3));
+    function removeLinks() {
+      const links = document.getElementById('links');
+      links.innerHTML = '';
     }
 
-    ((currentPage - 2) > 0) && links.appendChild(createButtonLink(currentPage - 2));
-    ((currentPage - 1) > 0) && links.appendChild(createButtonLink(currentPage - 1));
+    function displayLinks(currentPage, totalPages, category) {
+      const links = document.getElementById('links');
 
-    links.appendChild(createButtonLink(currentPage));
+      const prevButton = createButton('Previous');
+      prevButton.addEventListener('click', () => {
+        displayBeveragesByCategory(category, currentPage - 1)
+      });
+      (currentPage > 1) && links.appendChild(prevButton);
+      const firstButton = createButton(1);
+      firstButton.addEventListener('click', () => {
+        displayBeveragesByCategory(category, 1)
+      });
+      (currentPage > 4) && links.appendChild(firstButton);
 
-    ((currentPage + 1) <= totalPages) && links.appendChild(createButtonLink(currentPage + 1));
-    ((currentPage + 2) <= totalPages) && links.appendChild(createButtonLink(currentPage + 2));
+      if (currentPage > 4) {
+        const btn = createButton('...');
+        links.appendChild(btn);
+      } else if (currentPage > 3) {
+        const cpm3Button = createButton(currentPage - 3);
+        cpm3Button.addEventListener('click', () => {
+          displayBeveragesByCategory(category, currentPage - 3)
+        });
+        links.appendChild(cpm3Button);
+      }
 
-    if ((currentPage + 4) <= totalPages) {
-      const btn = createButton('...');
-      links.appendChild(btn);
-    } else if ((currentPage + 3) <= totalPages) {
-      links.appendChild(createButtonLink(currentPage + 3));
+      const cpm2Button = createButton(currentPage - 2);
+      cpm2Button.addEventListener('click', () => {
+        displayBeveragesByCategory(category, currentPage - 2)
+      });
+      ((currentPage - 2) > 0) && links.appendChild(cpm2Button);
+      const cpm1Button = createButton(currentPage - 1);
+      cpm1Button.addEventListener('click', () => {
+        displayBeveragesByCategory(category, currentPage - 1)
+      });
+      ((currentPage - 1) > 0) && links.appendChild(cpm1Button);
+
+      const cpButton = createButton(currentPage);
+      cpButton.addEventListener('click', () => {
+        displayBeveragesByCategory(category, currentPage)
+      });
+      links.appendChild(cpButton);
+
+      const cp1Button = createButton(currentPage + 1);
+      cp1Button.addEventListener('click', () => {
+        displayBeveragesByCategory(category, currentPage + 1)
+      });
+      ((currentPage + 1) <= totalPages) && links.appendChild(cp1Button);
+      const cp2Button = createButton(currentPage + 2);
+      cp2Button.addEventListener('click', () => {
+        displayBeveragesByCategory(category, currentPage + 2)
+      });
+      ((currentPage + 2) <= totalPages) && links.appendChild(cp2Button);
+
+      if ((currentPage + 4) <= totalPages) {
+        const btn = createButton('...');
+        links.appendChild(btn);
+      } else if ((currentPage + 3) <= totalPages) {
+        const cp3Button = createButton(currentPage + 3);
+        cp3Button.addEventListener('click', () => {
+          displayBeveragesByCategory(category, currentPage + 3)
+        });
+        links.appendChild(cp3Button);
+      }
+
+      const lastButton = createButton(totalPages);
+      lastButton.addEventListener('click', () => {
+        displayBeveragesByCategory(category, totalPages)
+      });
+      ((currentPage + 4) <= totalPages) && links.appendChild(lastButton);
+
+      const nextButton = createButton('Next');
+      nextButton.addEventListener('click', () => {
+        const page = getPageQuery() + 1;
+        displayBeveragesByCategory(category, page)
+      });
+      (currentPage < totalPages) && links.appendChild(nextButton);
+
     }
-
-    ((currentPage + 4) <= totalPages) && links.appendChild(createButtonLink(totalPages));
-    (currentPage < totalPages) && links.appendChild(createButtonLink((currentPage + 1), 'Next'));
-    `
-    <!-- ----------------------------------------------------------------------- -->
-    <!--                            pagination links                             -->
-    <!-- ----------------------------------------------------------------------- -->
-    `
 
   </script>
 
