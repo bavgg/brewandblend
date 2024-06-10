@@ -1,7 +1,7 @@
 export function loadImages(data) {
-  const liContainer =  document.getElementById('loadImages');
-  
+  const liContainer = document.getElementById('loadImages');
 
+  console.log(liContainer);
   data.map(d => {
     const form = document.createElement('form');
 
@@ -12,11 +12,25 @@ export function loadImages(data) {
   });
 }
 
-export function getPageQuery() {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const currentPage = Number(urlParams.get('page') || 1);
-  console.log('export ', currentPage);
-  return currentPage;
+export function setPageCategoryQuery(page, category) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('page', page);
+  url.searchParams.set('category', category);
+  console.log(url.searchParams.get('page'));
+  window.history.pushState({}, '', url);
+}
+
+export function setPageQuery() {
+  // Create a new URL object
+  const url = new URL(window.location.href);
+  // Set query parameters
+  url.searchParams.set('page', '1');
+  // Update the URL in the browser without reloading the page
+  window.history.pushState({}, '', url);
+}
+
+export function emptyPaginationDivContainer() {
+  const paginationDivContainer = document.getElementById('paginationDivContainer');
+  paginationDivContainer.innerHTML = '';
 }
 

@@ -125,8 +125,11 @@
   <div id="paginationDivContainer" style="margin-top: 20px;"></div>
 
   <script type="module">
-    import { beverages } from './beveragesData.js';
-    import { loadImages } from './utils/beverages.js';
+    import { createButtonLink, createButton } from './utils/pagination.js';
+    import { setPageCategoryQuery, setPageQuery, emptyPaginationDivContainer, loadImages } from './utils/beverages.js';
+    import {
+      beverages, totalPages, getTotalPages, beveragesByPage, coffeesByPage, hotBeveragesByPage, coldBeveragesByPage, seasonalsByPage, teasByPage
+    } from './beveragesData.js';
 
     document.addEventListener('DOMContentLoaded', function () {
       displayBeveragesByCategory('all');
@@ -151,42 +154,6 @@
 
       const teaInput = document.getElementById('teaa');
       teaInput.addEventListener('click', () => displayBeveragesByCategory('tea'));
-    }
-
-    function getPageQuery() {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const currentPage = Number(urlParams.get('page') || 1);
-      return currentPage;
-    }
-    function getCategoryQuery() {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const currentPage = Number(urlParams.get('category'));
-      return currentPage;
-    }
-
-    import { getTotalPages, beveragesByPage, coffeesByPage, hotBeveragesByPage, coldBeveragesByPage, seasonalsByPage, teasByPage } from './beveragesData.js';
-
-
-    function setPageQuery() {
-      // Create a new URL object
-      const url = new URL(window.location.href);
-      // Set query parameters
-      url.searchParams.set('page', '1');
-      // Update the URL in the browser without reloading the page
-      window.history.pushState({}, '', url);
-    }
-
-    function setPageCategoryQuery(page, category) {
-      // console.log('this', page);
-      // Create a new URL object
-      const url = new URL(window.location.href);
-      // Set query parameters
-      url.searchParams.set('page', page);
-      url.searchParams.set('category', category);
-      // Update the URL in the browser without reloading the page
-      window.history.pushState({}, '', url);
     }
 
     `<!-- ------------------------------ displays ------------------------------- -->`
@@ -233,19 +200,6 @@
 
       displayPagination(currentPage, totalPages, category);
       setPageCategoryQuery(currentPage, category);
-    }
-
-    `
-    <!-- ------------------------------- on load ------------------------------- -->
-    `
-
-
-    import { totalPages } from './beveragesData.js';
-    import { createButtonLink, createButton } from './utils/pagination.js';
-
-    function emptyPaginationDivContainer() {
-      const paginationDivContainer = document.getElementById('paginationDivContainer');
-      paginationDivContainer.innerHTML = '';
     }
     `
     <!-- ------------------------- pagination buttons -------------------------- -->
@@ -322,8 +276,7 @@
 
       const nextButton = createButton('Next');
       nextButton.addEventListener('click', () => {
-        const page = getPageQuery() + 1;
-        displayBeveragesByCategory(category, page)
+        displayBeveragesByCategory(category, currentPage + 1)
       });
       (currentPage < totalPages) && paginationDivContainer.appendChild(nextButton);
 
