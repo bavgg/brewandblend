@@ -34,3 +34,16 @@ export function emptyPaginationDivContainer() {
   paginationDivContainer.innerHTML = '';
 }
 
+export function createButtonWithEventListener(buttonContent, callback) {
+  const button = createButton(buttonContent);
+  button.addEventListener('click', callback);
+  return button;
+}
+
+export function createButton(content) {
+  const btn = document.createElement('button');
+  btn.textContent = content;
+
+  return btn;
+}
+

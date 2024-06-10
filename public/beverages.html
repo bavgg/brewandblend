@@ -125,8 +125,7 @@
   <div id="paginationDivContainer" style="margin-top: 20px;"></div>
 
   <script type="module">
-    import { createButtonLink, createButton } from './utils/pagination.js';
-    import { setPageCategoryQuery, setPageQuery, emptyPaginationDivContainer, loadImages } from './utils/beverages.js';
+    import { setPageCategoryQuery, setPageQuery, emptyPaginationDivContainer, loadImages, createButton, createButtonWithEventListener } from './utils/beverages.js';
     import {
       beverages, totalPages, getTotalPages, beveragesByPage, coffeesByPage, hotBeveragesByPage, coldBeveragesByPage, seasonalsByPage, teasByPage
     } from './beveragesData.js';
@@ -202,83 +201,122 @@
       setPageCategoryQuery(currentPage, category);
     }
     `
+    
     <!-- ------------------------- pagination buttons -------------------------- -->
     `
     function displayPagination(currentPage, totalPages, category) {
       const paginationDivContainer = document.getElementById('paginationDivContainer');
 
-      const prevButton = createButton('Previous');
-      prevButton.addEventListener('click', () => {
-        displayBeveragesByCategory(category, currentPage - 1)
-      });
-      (currentPage > 1) && paginationDivContainer.appendChild(prevButton);
-      const firstButton = createButton(1);
-      firstButton.addEventListener('click', () => {
-        displayBeveragesByCategory(category, 1)
-      });
-      (currentPage > 4) && paginationDivContainer.appendChild(firstButton);
+      
+
+      if(currentPage > 1) {
+
+        const buttonContent = 'Previous';
+        const callback = () => displayBeveragesByCategory(category, currentPage - 1)
+        const prevButton = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(prevButton);
+      }
 
       if (currentPage > 4) {
+
+        const buttonContent = 1;
+        const callback = () => displayBeveragesByCategory(category, 1);
+        const firstButton = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(firstButton);
+      }
+
+
+      if (currentPage > 4) {
+
         const btn = createButton('...');
         paginationDivContainer.appendChild(btn);
+
       } else if (currentPage > 3) {
-        const cpm3Button = createButton(currentPage - 3);
-        cpm3Button.addEventListener('click', () => {
-          displayBeveragesByCategory(category, currentPage - 3)
-        });
+
+        const buttonContent = currentPage - 3;
+        const callback = () => displayBeveragesByCategory(category, currentPage - 3);
+        const cpm3Button = createButtonWithEventListener(buttonContent, callback);
         paginationDivContainer.appendChild(cpm3Button);
       }
 
-      const cpm2Button = createButton(currentPage - 2);
-      cpm2Button.addEventListener('click', () => {
-        displayBeveragesByCategory(category, currentPage - 2)
-      });
-      ((currentPage - 2) > 0) && paginationDivContainer.appendChild(cpm2Button);
-      const cpm1Button = createButton(currentPage - 1);
-      cpm1Button.addEventListener('click', () => {
-        displayBeveragesByCategory(category, currentPage - 1)
-      });
-      ((currentPage - 1) > 0) && paginationDivContainer.appendChild(cpm1Button);
+      if( (currentPage - 2) > 0 ) {
 
-      const cpButton = createButton(currentPage);
-      cpButton.addEventListener('click', () => {
-        displayBeveragesByCategory(category, currentPage)
-      });
+        const buttonContent = currentPage - 2;
+        const callback = () => displayBeveragesByCategory(category, currentPage - 2);
+        const cpm2Button = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(cpm2Button);
+      }
+
+      
+      if( (currentPage - 1) > 0 ) {
+
+        const buttonContent = currentPage - 1;
+        const callback = () => displayBeveragesByCategory(category, currentPage - 1);
+        const cpm1Button = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(cpm1Button);
+      }
+
+      `
+      <!-- ---------------------------- current page ----------------------------- -->
+      `
+      const buttonContent = currentPage;
+      const callback = () => displayBeveragesByCategory(category, currentPage);
+      const cpButton = createButtonWithEventListener(buttonContent, callback);
       paginationDivContainer.appendChild(cpButton);
+      `
+      <!-- ---------------------------- current page ----------------------------- -->
+      `
 
-      const cp1Button = createButton(currentPage + 1);
-      cp1Button.addEventListener('click', () => {
-        displayBeveragesByCategory(category, currentPage + 1)
-      });
-      ((currentPage + 1) <= totalPages) && paginationDivContainer.appendChild(cp1Button);
-      const cp2Button = createButton(currentPage + 2);
-      cp2Button.addEventListener('click', () => {
-        displayBeveragesByCategory(category, currentPage + 2)
-      });
-      ((currentPage + 2) <= totalPages) && paginationDivContainer.appendChild(cp2Button);
+      
+
+      if ( (currentPage + 1) <= totalPages ) {
+
+        const buttonContent = currentPage + 1;
+        const callback = () => displayBeveragesByCategory(category, currentPage + 1);
+        const cp1Button = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(cp1Button);
+      }
+
+
+
+      if ( (currentPage + 2) <= totalPages ) {
+
+        const buttonContent = currentPage + 2;
+        const callback = () => displayBeveragesByCategory(category, currentPage + 2);
+        const cp2Button = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(cp2Button);
+      }
 
       if ((currentPage + 4) <= totalPages) {
         const btn = createButton('...');
         paginationDivContainer.appendChild(btn);
       } else if ((currentPage + 3) <= totalPages) {
-        const cp3Button = createButton(currentPage + 3);
-        cp3Button.addEventListener('click', () => {
-          displayBeveragesByCategory(category, currentPage + 3)
-        });
+
+        const buttonContent = currentPage + 3;
+        const callback = () => displayBeveragesByCategory(category, currentPage + 3);
+        const cp3Button = createButtonWithEventListener(buttonContent, callback);
         paginationDivContainer.appendChild(cp3Button);
       }
 
-      const lastButton = createButton(totalPages);
-      lastButton.addEventListener('click', () => {
-        displayBeveragesByCategory(category, totalPages)
-      });
-      ((currentPage + 4) <= totalPages) && paginationDivContainer.appendChild(lastButton);
+      
 
-      const nextButton = createButton('Next');
-      nextButton.addEventListener('click', () => {
-        displayBeveragesByCategory(category, currentPage + 1)
-      });
-      (currentPage < totalPages) && paginationDivContainer.appendChild(nextButton);
+      if( (currentPage + 4) <= totalPages ) {
+
+        const buttonContent = totalPages;
+        const callback = () => displayBeveragesByCategory(category, totalPages);
+        const lastButton = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(lastButton);
+      }
+
+      
+
+      if( currentPage < totalPages ) {
+        
+        const buttonContent = 'Next';
+        const callback = () => displayBeveragesByCategory(category, currentPage + 1);
+        const nextButton = createButtonWithEventListener(buttonContent, callback);
+        paginationDivContainer.appendChild(nextButton);
+      }
 
     }
 
