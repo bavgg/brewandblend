@@ -1,4 +1,4 @@
-const beverages = [
+export const beverages = [
   {
     "title": "Black Coffee",
     "description": "Svart kaffe är så enkelt som det kan bli med malda kaffebönor dränkta i hett vatten, serverat varmt. Och om du vill låta fancy kan du kalla svart kaffe med sitt rätta namn: café noir.",

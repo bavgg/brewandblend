@@ -114,13 +114,19 @@
       topFiveBeveragesByRank.map(beverage => {
         const form = document.createElement('form');
 
+        const addToCartButton = document.createElement('button');
+        addToCartButton.innerText = 'Add to cart';
+        addToCartButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          console.log('clicked');
+        });
+
         form.innerHTML = `
           <img height='170' src=${beverage.image}>
           <h4>${beverage.title}</h4>
           <p>$${beverage.price}.00</p>
-          <button>Add to cart</button>
         `;
-
+        form.appendChild(addToCartButton);
         beverageContainer.appendChild(form);
       });
     }

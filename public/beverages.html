@@ -9,6 +9,8 @@
 </head>
 
 <body>
+  <div id="loadImages" hidden></div>
+
   <header>
     <menu style="display: flex; align-items: center;">
       <div style=" margin-left: 20px;">
@@ -123,21 +125,13 @@
   <div id="paginationDivContainer" style="margin-top: 20px;"></div>
 
   <script type="module">
+    import { beverages } from './beveragesData.js';
+    import { loadImages } from './utils/beverages.js';
 
-    function getPageQuery() {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const currentPage = Number(urlParams.get('page') || 1);
-      return currentPage;
-    }
-    function getCategoryQuery() {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const currentPage = Number(urlParams.get('category'));
-      return currentPage;
-    }
-
-    import { getTotalPages, beveragesByPage, coffeesByPage, hotBeveragesByPage, coldBeveragesByPage, seasonalsByPage, teasByPage } from './beveragesData.js';
+    document.addEventListener('DOMContentLoaded', function () {
+      displayBeveragesByCategory('all');
+      loadImages(beverages);
+    });
 
     const beverageContainer = document.getElementById('beverageContainer');
 
@@ -158,6 +152,22 @@
       const teaInput = document.getElementById('teaa');
       teaInput.addEventListener('click', () => displayBeveragesByCategory('tea'));
     }
+
+    function getPageQuery() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const currentPage = Number(urlParams.get('page') || 1);
+      return currentPage;
+    }
+    function getCategoryQuery() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const currentPage = Number(urlParams.get('category'));
+      return currentPage;
+    }
+
+    import { getTotalPages, beveragesByPage, coffeesByPage, hotBeveragesByPage, coldBeveragesByPage, seasonalsByPage, teasByPage } from './beveragesData.js';
+
 
     function setPageQuery() {
       // Create a new URL object
@@ -205,12 +215,18 @@
       data.partition.map(d => {
         const form = document.createElement('form');
 
+        const addToCartButton = createButton('Add to cart');
+        addToCartButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          console.log(d);
+        });
+
         form.innerHTML = `
           <img height='170' src=${d.image}>
           <h4>${d.title}</h4>
           <p>$${d.price}.00</p>
-          <button>Add to cart</button>
         `;
+        form.appendChild(addToCartButton);
         beverageContainer.appendChild(form);
       });
       const totalPages = (data.length);
@@ -222,10 +238,7 @@
     `
     <!-- ------------------------------- on load ------------------------------- -->
     `
-    document.addEventListener('DOMContentLoaded', function () {
-      // Code to run once after the initial render
-      displayBeveragesByCategory('all');
-    });
+
 
     import { totalPages } from './beveragesData.js';
     import { createButtonLink, createButton } from './utils/pagination.js';
