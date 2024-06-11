@@ -19,3 +19,5 @@ export const client = new Client(pgConfig);
 
 await client.connect()
 console.log("database connected successfully");
+
+

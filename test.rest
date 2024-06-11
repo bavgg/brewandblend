@@ -1,0 +1,18 @@
+POST http://localhost:3000/user/authenticate/
+Content-Type: application/json
+
+{
+  "email": "potanginamo@gmail.com",
+  "password": "password"
+}
+
+####
+
+POST http://localhost:3000/user/register/
+Content-Type: application/json
+
+{
+  "username": "malakas",
+  "email": "potanginamo@gmail.com",
+  "password": "password"
+}
