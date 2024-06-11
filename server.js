@@ -2,10 +2,13 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { authenticate, register } from './lib/actions.js';
+import { generateAuthToken } from './utils/server.js';
 
 const app = express();
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static(join(__dirname, "public")));
@@ -14,7 +17,13 @@ app.post('/user/authenticate', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  authenticate(email, password);
+  const authResult = await authenticate(email, password);
+  if (authResult.success) {
+    const token = generateAuthToken(authResult.user.email); // Assuming you have a token generation function
+    return res.json({ success: true, token });
+  } else {
+    return res.status(401).json({ success: false, message: authResult.message });
+  }
 });
 
 app.post('/user/register', async (req, res) => {
@@ -22,7 +31,7 @@ app.post('/user/register', async (req, res) => {
   const password = req.body.password;
   const username = req.body.username;
 
-  register({email, password, username}, res);
+  register({email, password, username});
 });
 
 app.listen(3000, () => {
