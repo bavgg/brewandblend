@@ -80,7 +80,7 @@ const header =
     <a href="./beverages.html"><li style="margin-right: auto;" >Beverages</li></a>
 
     <a href="./signup.html">Sign Up</a>
-    <a href="./signin.html">Login</a>
+    <a href="./signin.html">Signin</a>
     <a>
       ${svgShoppingBag}
     </a>

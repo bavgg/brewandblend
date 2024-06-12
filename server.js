@@ -6,6 +6,7 @@ import { generateAuthToken } from './utils/server.js';
 
 const app = express();
 
+// middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,7 +21,12 @@ app.post('/user/authenticate', async (req, res) => {
   const authResult = await authenticate(email, password);
   if (authResult.success) {
     const token = generateAuthToken(authResult.user.email); // Assuming you have a token generation function
-    return res.json({ success: true, token });
+    // return res.json({ success: true, token });
+
+    // Set token in response header or cookie
+    res.cookie('authToken', token, { maxAge: 3600000, httpOnly: true });
+
+    return res.redirect('/');
   } else {
     return res.status(401).json({ success: false, message: authResult.message });
   }

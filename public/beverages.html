@@ -99,13 +99,40 @@
         data = beveragesByPage(currentPage);
       }
 
+      // side effect
+      function getCartItems() {
+        const localStorageItem = localStorage.getItem('cartItems');
+        const currentCartItems = JSON.parse(localStorageItem) || [];
+
+        return currentCartItems;
+      }
+
+      function addToCartItems(cartItems, cartItem) {
+        let copiedCartItems = [ ...cartItems ];
+        const itemFound = copiedCartItems.find(item => item.title === cartItem.title);
+
+        if (itemFound) {
+          itemFound.quantity += cartItem.quantity;
+        } else {
+          copiedCartItems.push(cartItem);
+        }
+        return copiedCartItems;
+      }
+
       data.partition.map(d => {
         const form = document.createElement('form');
-
         const addToCartButton = createButton('Add to cart');
+
         addToCartButton.addEventListener('click', (e) => {
           e.preventDefault();
-          console.log(d);
+
+          const cartItem = { ...d };
+          cartItem.quantity = 1;
+          const cartItems = getCartItems();
+          
+          const updatedCartItems = addToCartItems(cartItems, cartItem);
+
+          localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
         });
 
         form.innerHTML = `
@@ -128,7 +155,7 @@
     function displayPagination(currentPage, totalPages, category) {
       const paginationDivContainer = document.getElementById('paginationDivContainer');
 
-      if(currentPage > 1) {
+      if (currentPage > 1) {
 
         const buttonContent = 'Previous';
         const callback = () => displayBeveragesByCategory(category, currentPage - 1)
@@ -158,7 +185,7 @@
         paginationDivContainer.appendChild(cpm3Button);
       }
 
-      if( (currentPage - 2) > 0 ) {
+      if ((currentPage - 2) > 0) {
 
         const buttonContent = currentPage - 2;
         const callback = () => displayBeveragesByCategory(category, currentPage - 2);
@@ -166,8 +193,8 @@
         paginationDivContainer.appendChild(cpm2Button);
       }
 
-      
-      if( (currentPage - 1) > 0 ) {
+
+      if ((currentPage - 1) > 0) {
 
         const buttonContent = currentPage - 1;
         const callback = () => displayBeveragesByCategory(category, currentPage - 1);
@@ -186,9 +213,9 @@
       <!-- ---------------------------- current page ----------------------------- -->
       `
 
-      
 
-      if ( (currentPage + 1) <= totalPages ) {
+
+      if ((currentPage + 1) <= totalPages) {
 
         const buttonContent = currentPage + 1;
         const callback = () => displayBeveragesByCategory(category, currentPage + 1);
@@ -198,7 +225,7 @@
 
 
 
-      if ( (currentPage + 2) <= totalPages ) {
+      if ((currentPage + 2) <= totalPages) {
 
         const buttonContent = currentPage + 2;
         const callback = () => displayBeveragesByCategory(category, currentPage + 2);
@@ -217,9 +244,9 @@
         paginationDivContainer.appendChild(cp3Button);
       }
 
-      
 
-      if( (currentPage + 4) <= totalPages ) {
+
+      if ((currentPage + 4) <= totalPages) {
 
         const buttonContent = totalPages;
         const callback = () => displayBeveragesByCategory(category, totalPages);
@@ -227,10 +254,10 @@
         paginationDivContainer.appendChild(lastButton);
       }
 
-      
 
-      if( currentPage < totalPages ) {
-        
+
+      if (currentPage < totalPages) {
+
         const buttonContent = 'Next';
         const callback = () => displayBeveragesByCategory(category, currentPage + 1);
         const nextButton = createButtonWithEventListener(buttonContent, callback);
