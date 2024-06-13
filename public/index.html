@@ -6,10 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
   <link rel="stylesheet" href="./styles.css">
+  <style>
+    #count {
+      background-color: #0968DA;
+      color: white;
+      font-weight: 700;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      padding-left: 6px;
+      padding-right: 6px;
+      border-radius: 8px;
+      right: -3px;
+      bottom: 8px;
+    }
+  </style>
 </head>
 
 <body>
-  <script src="header.js"></script>
+  <script src="./dist/header.js"></script>
 
   <div
     style="justify-content: center; padding: 20px; margin-bottom: 50px; display: flex; flex-direction: column; justify-content: center; border-bottom: 0;">
@@ -23,33 +40,7 @@
   <div id="beverageContainer" style="display: flex;">
   </div>
 
-  <script type="module">
-    import { topFiveBeveragesByRank } from './beveragesData.js';
-    const beverageContainer = document.getElementById('beverageContainer');
-
-    const displayBeverages = async () => {
-
-      topFiveBeveragesByRank.map(beverage => {
-        const form = document.createElement('form');
-
-        const addToCartButton = document.createElement('button');
-        addToCartButton.innerText = 'Add to cart';
-        addToCartButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          console.log('clicked');
-        });
-
-        form.innerHTML = `
-          <img height='170' src=${beverage.image}>
-          <h4>${beverage.title}</h4>
-          <p>$${beverage.price}.00</p>
-        `;
-        form.appendChild(addToCartButton);
-        beverageContainer.appendChild(form);
-      });
-    }
-    displayBeverages();
-  </script>
+  <script src="./dist/index.js"></script>
 
 </body>
 

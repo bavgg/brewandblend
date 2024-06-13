@@ -6,12 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
   <link rel="stylesheet" href="./styles.css">
+  <style>
+    #count {
+      background-color: #0968DA;
+      color: white;
+      font-weight: 700;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      padding-left: 6px;
+      padding-right: 6px;
+      border-radius: 8px;
+      right: -3px;
+      bottom: 8px;
+    }
+  </style>
 </head>
 
 <body>
   <div id="loadImages" hidden></div>
-
-  <script src="header.js"></script>
+  <script src="./dist/header.js"></script>
 
   <aside style="float: left;">
     <h1>Filters</h1>
@@ -45,227 +61,7 @@
 
   <div id="paginationDivContainer" style="margin-top: 20px;"></div>
 
-  <script type="module">
-    import { setPageCategoryQuery, setPageQuery, emptyPaginationDivContainer, loadImages, createButton, createButtonWithEventListener } from './utils/beverages.js';
-    import {
-      beverages, totalPages, getTotalPages, beveragesByPage, coffeesByPage, hotBeveragesByPage, coldBeveragesByPage, seasonalsByPage, teasByPage
-    } from './beveragesData.js';
-
-    document.addEventListener('DOMContentLoaded', function () {
-      displayBeveragesByCategory('all');
-      loadImages(beverages);
-    });
-
-    const beverageContainer = document.getElementById('beverageContainer');
-
-    `<!-- ------------------------------- events -------------------------------- -->`
-    {
-      const coffeeInput = document.getElementById('coffee');
-      coffeeInput.addEventListener('click', () => displayBeveragesByCategory('coffee'));
-
-      const hotInput = document.getElementById('hot');
-      hotInput.addEventListener('click', () => displayBeveragesByCategory('hot'));
-
-      const coldInput = document.getElementById('cold');
-      coldInput.addEventListener('click', () => displayBeveragesByCategory('cold'));
-
-      const seasonalInput = document.getElementById('seasonal');
-      seasonalInput.addEventListener('click', () => displayBeveragesByCategory('seasonal'));
-
-      const teaInput = document.getElementById('teaa');
-      teaInput.addEventListener('click', () => displayBeveragesByCategory('tea'));
-    }
-
-    `<!-- ------------------------------ displays ------------------------------- -->`
-    function displayBeveragesByCategory(category, page = null) {
-      emptyPaginationDivContainer();
-      beverageContainer.innerHTML = '';
-
-      setPageQuery();
-      const currentPage = page || 1;
-
-      let data;
-      if (category === 'coffee') {
-        data = coffeesByPage(currentPage);
-      } else if (category === 'hot') {
-        data = hotBeveragesByPage(currentPage);
-      } else if (category === 'cold') {
-        data = coldBeveragesByPage(currentPage);
-      } else if (category === 'seasonal') {
-        data = seasonalsByPage(currentPage);
-      } else if (category === 'tea') {
-        data = teasByPage(currentPage);
-      } else if (category === 'all') {
-        data = beveragesByPage(currentPage);
-      }
-
-      // side effect
-      function getCartItems() {
-        const localStorageItem = localStorage.getItem('cartItems');
-        const currentCartItems = JSON.parse(localStorageItem) || [];
-
-        return currentCartItems;
-      }
-
-      function addToCartItems(cartItems, cartItem) {
-        let copiedCartItems = [ ...cartItems ];
-        const itemFound = copiedCartItems.find(item => item.title === cartItem.title);
-
-        if (itemFound) {
-          itemFound.quantity += cartItem.quantity;
-        } else {
-          copiedCartItems.push(cartItem);
-        }
-        return copiedCartItems;
-      }
-
-      data.partition.map(d => {
-        const form = document.createElement('form');
-        const addToCartButton = createButton('Add to cart');
-
-        addToCartButton.addEventListener('click', (e) => {
-          e.preventDefault();
-
-          const cartItem = { ...d };
-          cartItem.quantity = 1;
-          const cartItems = getCartItems();
-          
-          const updatedCartItems = addToCartItems(cartItems, cartItem);
-
-          localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-        });
-
-        form.innerHTML = `
-          <img height='170' src=${d.image}>
-          <h4>${d.title}</h4>
-          <p>$${d.price}.00</p>
-        `;
-        form.appendChild(addToCartButton);
-        beverageContainer.appendChild(form);
-      });
-      const totalPages = (data.length);
-
-      displayPagination(currentPage, totalPages, category);
-      setPageCategoryQuery(currentPage, category);
-    }
-    `
-
-    <!-- ------------------------- pagination buttons -------------------------- -->
-    `
-    function displayPagination(currentPage, totalPages, category) {
-      const paginationDivContainer = document.getElementById('paginationDivContainer');
-
-      if (currentPage > 1) {
-
-        const buttonContent = 'Previous';
-        const callback = () => displayBeveragesByCategory(category, currentPage - 1)
-        const prevButton = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(prevButton);
-      }
-
-      if (currentPage > 4) {
-
-        const buttonContent = 1;
-        const callback = () => displayBeveragesByCategory(category, 1);
-        const firstButton = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(firstButton);
-      }
-
-
-      if (currentPage > 4) {
-
-        const btn = createButton('...');
-        paginationDivContainer.appendChild(btn);
-
-      } else if (currentPage > 3) {
-
-        const buttonContent = currentPage - 3;
-        const callback = () => displayBeveragesByCategory(category, currentPage - 3);
-        const cpm3Button = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(cpm3Button);
-      }
-
-      if ((currentPage - 2) > 0) {
-
-        const buttonContent = currentPage - 2;
-        const callback = () => displayBeveragesByCategory(category, currentPage - 2);
-        const cpm2Button = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(cpm2Button);
-      }
-
-
-      if ((currentPage - 1) > 0) {
-
-        const buttonContent = currentPage - 1;
-        const callback = () => displayBeveragesByCategory(category, currentPage - 1);
-        const cpm1Button = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(cpm1Button);
-      }
-
-      `
-      <!-- ---------------------------- current page ----------------------------- -->
-      `
-      const buttonContent = currentPage;
-      const callback = () => displayBeveragesByCategory(category, currentPage);
-      const cpButton = createButtonWithEventListener(buttonContent, callback);
-      paginationDivContainer.appendChild(cpButton);
-      `
-      <!-- ---------------------------- current page ----------------------------- -->
-      `
-
-
-
-      if ((currentPage + 1) <= totalPages) {
-
-        const buttonContent = currentPage + 1;
-        const callback = () => displayBeveragesByCategory(category, currentPage + 1);
-        const cp1Button = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(cp1Button);
-      }
-
-
-
-      if ((currentPage + 2) <= totalPages) {
-
-        const buttonContent = currentPage + 2;
-        const callback = () => displayBeveragesByCategory(category, currentPage + 2);
-        const cp2Button = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(cp2Button);
-      }
-
-      if ((currentPage + 4) <= totalPages) {
-        const btn = createButton('...');
-        paginationDivContainer.appendChild(btn);
-      } else if ((currentPage + 3) <= totalPages) {
-
-        const buttonContent = currentPage + 3;
-        const callback = () => displayBeveragesByCategory(category, currentPage + 3);
-        const cp3Button = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(cp3Button);
-      }
-
-
-
-      if ((currentPage + 4) <= totalPages) {
-
-        const buttonContent = totalPages;
-        const callback = () => displayBeveragesByCategory(category, totalPages);
-        const lastButton = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(lastButton);
-      }
-
-
-
-      if (currentPage < totalPages) {
-
-        const buttonContent = 'Next';
-        const callback = () => displayBeveragesByCategory(category, currentPage + 1);
-        const nextButton = createButtonWithEventListener(buttonContent, callback);
-        paginationDivContainer.appendChild(nextButton);
-      }
-
-    }
-
+  <script src="./dist/main.js">
   </script>
 
 </body>

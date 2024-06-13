@@ -16,3 +16,12 @@ Content-Type: application/json
   "email": "potanginamo@gmail.com",
   "password": "password"
 }
+
+###
+POST http://localhost:3000/user/signout/
+Content-Type: application/json
+
+{
+  "cartItems": "malakas",
+
+}
