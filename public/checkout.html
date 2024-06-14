@@ -20,31 +20,32 @@
   }
 
   form p {
-    font-size: 11px;
+    font-size: 14px;
+    margin-bottom: 2px;
   }
 
-
+  form h4 {
+    margin-bottom: 3px;
+  }
 </style>
 
 <body>
   <div id="loadImages" hidden></div>
   <script src="./dist/header.js"></script>
 
+  <label>Delivery Adddress</label>
+  <form>
+    <input type="text" placeholder="Fullname" required>
+    <input type="number" placeholder="Phone number" required>
+    <input type="text" placeholder="Adddress" required>
+    <button>Save</button>
+    <button type="submit">Place Order</button>
+  </form>
 
   <label>Products Ordered</label>
   <div id="cartItems">
     <!-- forms -->
   </div>
-
-
-  <label>Delivery Adddress</label>
-  <form>
-    <input type="text" placeholder="Fullname">
-    <input type="number" placeholder="Phone number">
-    <input type="text" placeholder="Adddress">
-    <button>Save</button>
-    <button type="submit">Place Order</button>
-  </form>
 
   <script src="./dist/checkout.js">
   </script>

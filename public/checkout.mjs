@@ -9,7 +9,7 @@ cartItems.map((cartItem) => {
 
   form.innerHTML = `
     <img  width="100" src="${cartItem.image}">
-    <h5>${cartItem.title}</h5>
+    <h4>${cartItem.title}</h4>
 
     <p>Price: $${cartItem.price}</p>
 
