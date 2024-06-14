@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    form input {
+      cursor: text;
+    }
+  </style>
+</head>
+
+<style>
+  #cartItems {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  form p {
+    font-size: 11px;
+  }
+
+
+</style>
+
+<body>
+  <div id="loadImages" hidden></div>
+  <script src="./dist/header.js"></script>
+
+
+  <label>Products Ordered</label>
+  <div id="cartItems">
+    <!-- forms -->
+  </div>
+
+
+  <label>Delivery Adddress</label>
+  <form>
+    <input type="text" placeholder="Fullname">
+    <input type="number" placeholder="Phone number">
+    <input type="text" placeholder="Adddress">
+    <button>Save</button>
+    <button type="submit">Place Order</button>
+  </form>
+
+  <script src="./dist/checkout.js">
+  </script>
+
+</body>
+
+</html>

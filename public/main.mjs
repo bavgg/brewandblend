@@ -30,7 +30,6 @@ const beverageCategories = {
   tea: 'tea',
 };
 
-
 Object.keys(beverageCategories).forEach(id => {
   document.getElementById(id).addEventListener('click', () => {
     displayBeveragesByPageAndCategory(beverageCategories[id], 1);

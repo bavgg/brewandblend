@@ -20,13 +20,13 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./public/cart.mjs":
-/*!*************************!*\
-  !*** ./public/cart.mjs ***!
-  \*************************/
+/***/ "./public/checkout.mjs":
+/*!*****************************!*\
+  !*** ./public/checkout.mjs ***!
+  \*****************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _utils_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.mjs */ \"./public/utils.mjs\");\n\n\n\n\n\nrenderCartItems();\nrenderSubtotal();\n\nfunction getCartItemsTotalAmount() {\n  const cartItems = (0,_utils_mjs__WEBPACK_IMPORTED_MODULE_0__.getCartItemsFromLocalStorage)();\n  let totalAmount = 0;\n  cartItems.map(cartItem => {\n    const subtotal = cartItem.price * cartItem.quantity;\n    totalAmount += subtotal;\n  });\n\n  return totalAmount;\n}\n\nfunction renderCartItems() {\n  const cartItems = (0,_utils_mjs__WEBPACK_IMPORTED_MODULE_0__.getCartItemsFromLocalStorage)();\n  cartItems.forEach(cartItem => {\n    const itemsContainer = document.getElementById('items');\n    const form = document.createElement('form');\n    form.style.display = 'flex';\n\n    form.innerHTML =\n      `\n    <img height='120' src=${cartItem.image} style=\"margin: 0px 10px\">\n    <div style=\"margin-right: auto\">\n      <h4>${cartItem.title}</h4>\n      <p style=\"margin: 0px;\">$${cartItem.price}.00</p>\n      <div style=\"display: flex; align-items: end;\">\n        <label></label>\n      </div>\n    </div>\n    `;\n\n    /* ----------------------- element with event listnere ---------------------- */\n    const inputElement = document.createElement('input');\n    inputElement.id = 'inputQuantity';\n    inputElement.type = 'number';\n    inputElement.value = cartItem.quantity;\n\n    let previousValue = inputElement.value;\n\n    inputElement.addEventListener('blur', (event) => {\n\n      // checks if input is empty\n      if (event.target.value === '') {\n        event.target.value = previousValue;\n      } else {\n        previousValue = event.target.value;\n      }\n\n      const quantity = parseInt(inputElement.value);\n      (0,_utils_mjs__WEBPACK_IMPORTED_MODULE_0__.updateLocalStorage)(cartItem, quantity);\n      (0,_utils_mjs__WEBPACK_IMPORTED_MODULE_0__.updateUICartIcon)();\n      renderSubtotal();\n    });\n    /* ----------------------- element with event listnere ---------------------- */\n\n    form.querySelector('label').appendChild(inputElement);\n\n    itemsContainer.appendChild(form);\n\n  });\n}\n\n// sideeffect\nfunction addListener(htmlElement, callback) {\n\n}\n\n\nfunction renderSubtotal() {\n  document.getElementById('action').innerHTML =\n  `\n    <form action=\"checkout.html\">\n      <div>\n        <h4>Subtotal: </h4>\n        <p>$${getCartItemsTotalAmount()}.00</p>\n      </div>\n      <button style=\"color: white; background-color: #0968DA\">Proceed to checkout</button>\n    </form>\n  `;\n\n}\n\n\n\n\n\n\n//# sourceURL=webpack://ecommercekittens/./public/cart.mjs?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _utils_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.mjs */ \"./public/utils.mjs\");\n\n\nconst cartItems = (0,_utils_mjs__WEBPACK_IMPORTED_MODULE_0__.getCartItemsFromLocalStorage)();\n\nconst cartItemsContainer = document.getElementById('cartItems');\n\ncartItems.map((cartItem) => {\n  const form = document.createElement('form');\n\n  form.innerHTML = `\n    <img  width=\"100\" src=\"${cartItem.image}\">\n    <h5>${cartItem.title}</h5>\n\n    <p>Price: $${cartItem.price}</p>\n\n    <p>Quantity: ${cartItem.quantity}</p>\n\n    <p>Subtotal: $${cartItem.quantity * cartItem.price}</p>\n  `;\n\n  cartItemsContainer.appendChild(form);\n});\n\n//# sourceURL=webpack://ecommercekittens/./public/checkout.mjs?");
 
 /***/ }),
 
@@ -100,7 +100,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./public/cart.mjs");
+/******/ 	var __webpack_exports__ = __webpack_require__("./public/checkout.mjs");
 /******/ 	
 /******/ })()
 ;

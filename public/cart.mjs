@@ -76,7 +76,7 @@ function addListener(htmlElement, callback) {
 function renderSubtotal() {
   document.getElementById('action').innerHTML =
   `
-    <form>
+    <form action="checkout.html">
       <div>
         <h4>Subtotal: </h4>
         <p>$${getCartItemsTotalAmount()}.00</p>
