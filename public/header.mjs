@@ -5,7 +5,7 @@ const svgLogo =
     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
     <g id="SVGRepo_iconCarrier">
       <title></title>
-      <g id="tea">
+      <g id="teaLogo">
         <ellipse cx="28" cy="29" rx="25" ry="6"
           style="fill:none;stroke:#646D76;stroke-linecap:round;stroke-miterlimit:10;stroke-width:2px"></ellipse>
         <path d="M6,43A27.85,27.85,0,0,1,3,30V29"
@@ -57,6 +57,23 @@ const svgLogo =
 `;
 const svgShoppingBag =
 `
+  <style>
+  #count {
+    background-color: #0968DA;
+    color: white;
+    font-weight: 700;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 8px;
+    right: -3px;
+    bottom: 8px;
+  }
+  </style>
   <div>
     <div id="count"></div>
     <svg height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +102,7 @@ const header =
     <a id="signup" href="./signup.html">Sign Up</a>
     <a id="signin" href="./signin.html">Signin</a>
     <a id="signout" >Signout</a>
-    <a>
+    <a href="/cart.html">
       ${svgShoppingBag}
     </a>
   </menu>
@@ -94,7 +111,9 @@ const header =
 
 document.write(header);
 
-import { isAuthenticated } from "./utils.mjs";
+import { isAuthenticated, initializeCartUI } from "./utils.mjs";
+
+initializeCartUI();
 
 const renderAuthButtons = () => {
   const signinElement = document.getElementById('signin');

@@ -7,9 +7,6 @@ import { beverages, getDataByPageAndCategory } from './beveragesData.mjs';
 // ContainerElement
 const beverageContainer = document.getElementById('beverageContainer');
 
-// Initialize cart UI
-initializeCartUI();
-
 // Event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   displayBeveragesByPageAndCategory('all', 1);
@@ -32,6 +29,7 @@ const beverageCategories = {
   seasonal: 'seasonal',
   tea: 'tea',
 };
+
 
 Object.keys(beverageCategories).forEach(id => {
   document.getElementById(id).addEventListener('click', () => {

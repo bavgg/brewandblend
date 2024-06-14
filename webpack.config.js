@@ -5,7 +5,8 @@ module.exports = {
   entry: {
     main: './public/main.mjs',
     header: './public/header.mjs',
-    index: './public/index.mjs'
+    index: './public/index.mjs',
+    cart: './public/cart.mjs'
   },
   output: {
     filename: '[name].js',

@@ -78,6 +78,14 @@ export function getCartItemsFromLocalStorage() {
   return JSON.parse(storedCartItems) || [];
 }
 
+export function updateLocalStorage(cartItem, quantity) {
+  const cartItems = getCartItemsFromLocalStorage();
+  const matchedItem = cartItems.find(item => item.title === cartItem.title);
+
+  matchedItem.quantity = quantity;
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+}
+
 // Helper function to add or update an item in the cart
 function addOrUpdateCartItem(cartItems, newItem) {
   const existingItem = cartItems.find(item => item.title === newItem.title);
