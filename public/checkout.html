@@ -34,18 +34,19 @@
   <script src="./dist/header.js"></script>
 
   <label>Delivery Adddress</label>
-  <form>
-    <input type="text" placeholder="Fullname" required>
-    <input type="number" placeholder="Phone number" required>
-    <input type="text" placeholder="Adddress" required>
-    <button>Save</button>
-    <button type="submit">Place Order</button>
+  <form id="form">
+    <input type="text" placeholder="Fullname" id="name" required>
+    <input type="text" placeholder="Phone number" id="phone" pattern="09\d{9}" title="Format should start with 09 followed by exactly 9 digits (0-9)" required>
+    <input type="text" placeholder="Adddress" id="address" required>
+    <button id="submit" >Place Order</button>
   </form>
 
   <label>Products Ordered</label>
-  <div id="cartItems">
-    <!-- forms -->
-  </div>
+  <fieldset>
+    <div id="cartItems">
+      <!-- forms -->
+    </div>
+  </fieldset>
 
   <script src="./dist/checkout.js">
   </script>
