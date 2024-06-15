@@ -1,4 +1,4 @@
-import { getCartItemsFromLocalStorage, updateLocalStorage, updateUICartIcon } from "./utils.mjs";
+import { getCartItemsFromLocalStorage, updateLocalStorage, updateUICartIcon, isAuthenticated } from "./utils.mjs";
 
 
 
@@ -76,17 +76,27 @@ function addListener(htmlElement, callback) {
 function renderSubtotal() {
   document.getElementById('action').innerHTML =
   `
-    <form action="checkout.html">
+    <form>
       <div>
         <h4>Subtotal: </h4>
         <p>$${getCartItemsTotalAmount()}.00</p>
       </div>
-      <button style="color: white; background-color: #0968DA">Proceed to checkout</button>
+      <button id="proceedToCheckoutButton" style="color: white; background-color: #0968DA">Proceed to checkout</button>
     </form>
   `;
 
 }
+const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton');
 
+proceedToCheckoutButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  console.log();
+  if(isAuthenticated()) {
+    window.location.href = '/checkout.html';
+  }else {
+    window.location.href = '/signin.html';
+  }
+});
 
 
 
