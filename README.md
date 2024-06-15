@@ -1,6 +1,6 @@
 # Simple Ecommerce App
 
-Simple ecommerce app with javascript, html and matcha.css.
+Simple ecommerce Hybrid Application ( MPA and SPA) with javascript.
 
 ### Links
 
@@ -9,7 +9,7 @@ Simple ecommerce app with javascript, html and matcha.css.
 ### Built with
 
 - JavaScript
-- CSS - Grid, Flexbox
+- CSS - Grid, Flexbox, matcha.css
 - HTML
 - Webpack
 - JWToken
