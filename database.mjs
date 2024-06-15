@@ -4,7 +4,6 @@ import pg from 'pg'
 
 dotenv.config();
 
-
 const { Client } = pg
 
 const pgConfig = {
@@ -14,7 +13,7 @@ const pgConfig = {
   database: process.env.DB_DATABASE,
   port: process.env.DB_PORT, 
 };
-console.log(pgConfig);
+
 export const client = new Client(pgConfig);
 
 await client.connect()
