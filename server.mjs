@@ -15,8 +15,6 @@ async function generateJWToken(user) {
     expiresIn: '1h',
   });
 
-  console.log(token);
-
   return token;
 }
 
@@ -72,8 +70,6 @@ app.post('/user/register', async (req, res) => {
 app.post('/user/cart/save', async (req, res) => {
   const { cartItems } = req.body;
   const user_id = req.cookies.user_id;
-
-  console.log(cartItems);
 
   const result = await saveCartItems(cartItems, user_id);
   if (result.success) {

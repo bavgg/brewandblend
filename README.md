@@ -14,12 +14,18 @@ Simple ecommerce Hybrid Application ( MPA and SPA) with javascript.
 - Webpack
 - JWToken
 - Express
-- MySQL
+- PostgreSQL
 
 ### Tools
 
 - ChatGPT
 - VSCode
+
+### Install
+
+- npm install
+- edit .env
+- npm run dev
 
 ### Screenshot
 

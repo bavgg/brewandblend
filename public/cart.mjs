@@ -90,7 +90,7 @@ const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton
 
 proceedToCheckoutButton.addEventListener('click', (e) => {
   e.preventDefault();
-  console.log();
+
   if(isAuthenticated()) {
     window.location.href = '/checkout.html';
   }else {
