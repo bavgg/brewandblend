@@ -105,6 +105,31 @@ function getTotalCartQuantity() {
   return cartItems.reduce((total, item) => total + item.quantity, 0);
 }
 
+export async function onSignOut() {
+  try {
+    const cartItems = getCartItemsFromLocalStorage();
+
+    // save cart items if greater than zero
+    if (cartItems.length > 0) {
+      const response = await fetch('/user/cart/save', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartItems }),
+      });
+
+      if (!response.ok) throw new Error('Failed to save data to server');
+    }
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('authToken');
+    window.location.href = "http://localhost:3000/";
+
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 // Create a pagination button with a click listener
 export function createPaginationButton(content, callback) {
   const button = createButton(content);

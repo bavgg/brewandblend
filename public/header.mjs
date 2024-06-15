@@ -111,7 +111,7 @@ const header =
 
 document.write(header);
 
-import { isAuthenticated, initializeCartUI } from "./utils.mjs";
+import { isAuthenticated, initializeCartUI, onSignOut } from "./utils.mjs";
 
 initializeCartUI();
 
@@ -131,6 +131,10 @@ const renderAuthButtons = () => {
   }
 };
 
-
+const signOutElement = document.getElementById('signout');
+signOutElement.addEventListener('click', (e) => {
+  e.preventDefault();
+  onSignOut();
+});
 
 renderAuthButtons();

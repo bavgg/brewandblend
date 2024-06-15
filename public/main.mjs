@@ -1,6 +1,6 @@
 import {
   updateUICartIcon, initializeCartUI, addToCart, updatePageAndCategory,
-  clearPaginationContainer, loadImages, createButton, getCartItemsFromLocalStorage, createPaginationButton
+  clearPaginationContainer, loadImages, createButton, createPaginationButton
 } from './utils.mjs';
 import { beverages, getDataByPageAndCategory } from './beveragesData.mjs';
 
@@ -13,13 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadImages(beverages);
 });
 
-// Event listener for sign out
-const signOutElement = document.getElementById('signout');
-signOutElement.addEventListener('click', (e) => {
-  e.preventDefault();
-  console.log('clicked');
-  onSignOut();
-});
 
 // Beverage category event listeners
 const beverageCategories = {
@@ -65,30 +58,7 @@ function getCookie(name) {
 }
 
 // Sign out function
-async function onSignOut() {
-  try {
-    const cartItems = getCartItemsFromLocalStorage();
 
-    // save cart items if greater than zero
-    if (cartItems.length > 0) {
-      const response = await fetch('/user/cart/save', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartItems }),
-      });
-
-      if (!response.ok) throw new Error('Failed to save data to server');
-    }
-    localStorage.removeItem('cartItems');
-    localStorage.removeItem('authToken');
-    window.location.href = "http://localhost:3000/";
-
-
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
 
 // Display beverages by category and page
 function displayBeveragesByPageAndCategory(category, page) {
