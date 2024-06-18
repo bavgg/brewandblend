@@ -122,6 +122,7 @@ export async function onSignOut() {
     }
     localStorage.removeItem('cartItems');
     localStorage.removeItem('authToken');
+    localStorage.removeItem('deliveryInfo');
     window.location.href = "http://localhost:3000/";
 
 

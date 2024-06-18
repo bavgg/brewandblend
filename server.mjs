@@ -53,14 +53,13 @@ app.post('/user/register', async (req, res) => {
   const password = req.body.password;
   const username = req.body.username;
 
-
   const result = await register({ email, password, username });
   if (result.success) {
-    const token = generateJWToken(result.user); // Assuming you have a token generation function
+    const token = await generateJWToken(result.user); // Assuming you have a token generation function
     res.cookie('authToken', token, { maxAge: 3600000, httpOnly: true });
     res.cookie('user_id', result.user.id, { maxAge: 3600000, httpOnly: true });
     
-    return res.status(201).json({ success: true, message: "User signed in successfully" });
+    return res.status(201).json({ success: true, message: "User signed in successfully", token });
   } else {
 
     return res.status(401).json({ success: false, message: result.message });
