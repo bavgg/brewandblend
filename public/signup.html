@@ -58,7 +58,6 @@
         }
 
         const responseData = await response.json();
-        console.log(responseData.token);
         localStorage.setItem('authToken', responseData.token);
         alert(responseData.message);
         window.location.href = "http://localhost:3000/";

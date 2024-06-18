@@ -1,42 +1,43 @@
 import { getCartItemsFromLocalStorage, updateLocalStorage, updateUICartIcon, isAuthenticated } from "./utils.mjs";
 
-
-
-
-renderCartItems();
-renderSubtotal();
+function renderSubtotal() {
+  const subtotal = getCartItemsTotalAmount();
+  document.getElementById('action').innerHTML = `
+    <form>
+      <div>
+        <h4>Subtotal: </h4>
+        <p>$${subtotal}.00</p>
+      </div>
+      <button id="proceedToCheckoutButton" style="color: white; background-color: #0968DA">Proceed to checkout</button>
+    </form>
+  `;
+}
 
 function getCartItemsTotalAmount() {
   const cartItems = getCartItemsFromLocalStorage();
-  let totalAmount = 0;
-  cartItems.map(cartItem => {
-    const subtotal = cartItem.price * cartItem.quantity;
-    totalAmount += subtotal;
-  });
-
-  return totalAmount;
+  return cartItems.reduce((total, cartItem) => total + cartItem.price * cartItem.quantity, 0);
 }
 
 function renderCartItems() {
   const cartItems = getCartItemsFromLocalStorage();
+  const itemsContainer = document.getElementById('items');
+  itemsContainer.innerHTML = ''; // Clear previous items
+
   cartItems.forEach(cartItem => {
-    const itemsContainer = document.getElementById('items');
     const form = document.createElement('form');
     form.style.display = 'flex';
 
-    form.innerHTML =
-      `
-    <img height='120' src=${cartItem.image} style="margin: 0px 10px">
-    <div style="margin-right: auto">
-      <h4>${cartItem.title}</h4>
-      <p style="margin: 0px;">$${cartItem.price}.00</p>
-      <div style="display: flex; align-items: end;">
-        <label></label>
+    form.innerHTML = `
+      <img height='120' src=${cartItem.image} style="margin: 0px 10px">
+      <div style="margin-right: auto">
+        <h4>${cartItem.title}</h4>
+        <p style="margin: 0px;">$${cartItem.price}.00</p>
+        <div style="display: flex; align-items: end;">
+          <label></label>
+        </div>
       </div>
-    </div>
     `;
 
-    /* ----------------------- element with event listnere ---------------------- */
     const inputElement = document.createElement('input');
     inputElement.id = 'inputQuantity';
     inputElement.type = 'number';
@@ -45,8 +46,6 @@ function renderCartItems() {
     let previousValue = inputElement.value;
 
     inputElement.addEventListener('blur', (event) => {
-
-      // checks if input is empty
       if (event.target.value === '') {
         event.target.value = previousValue;
       } else {
@@ -58,45 +57,37 @@ function renderCartItems() {
       updateUICartIcon();
       renderSubtotal();
     });
-    /* ----------------------- element with event listnere ---------------------- */
 
     form.querySelector('label').appendChild(inputElement);
-
     itemsContainer.appendChild(form);
-
   });
 }
 
-// sideeffect
-function addListener(htmlElement, callback) {
+function renderProceedToCheckoutButton() {
+  const actionContainer = document.getElementById('action');
+  const cartItems = getCartItemsFromLocalStorage();
 
-}
-
-
-function renderSubtotal() {
-  document.getElementById('action').innerHTML =
-  `
-    <form>
-      <div>
-        <h4>Subtotal: </h4>
-        <p>$${getCartItemsTotalAmount()}.00</p>
-      </div>
-      <button id="proceedToCheckoutButton" style="color: white; background-color: #0968DA">Proceed to checkout</button>
-    </form>
-  `;
-
-}
-const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton');
-
-proceedToCheckoutButton.addEventListener('click', (e) => {
-  e.preventDefault();
-
-  if(isAuthenticated()) {
-    window.location.href = '/checkout.html';
-  }else {
-    window.location.href = '/signin.html';
+  if (cartItems.length === 0) {
+    actionContainer.style.display = 'none';
+  } else {
+    actionContainer.style.display = 'block';
   }
-});
+}
 
+function initProceedToCheckoutButton() {
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'proceedToCheckoutButton') {
+      e.preventDefault();
+      window.location.href = isAuthenticated() ? '/checkout.html' : '/signin.html';
+    }
+  });
+}
 
+function initialize() {
+  renderCartItems();
+  renderSubtotal();
+  renderProceedToCheckoutButton();
+  initProceedToCheckoutButton();
+}
 
+initialize();
